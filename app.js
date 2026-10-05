@@ -63,8 +63,8 @@ function searchView(q){
  qi.oninput=run;run();if(!q)qi.focus();
 }
 function glossary(){
- var items=all.slice().sort(function(a,b){return a.title.localeCompare(b.title,'he')}),h='<h1 class="ct">מילון מושגים</h1><p class="lead">'+total+' מושגים בסדר אלפביתי. הקשה על מושג פותחת את ההסבר המלא.</p>',last='';
- items.forEach(function(it){var l=it.title.charAt(0).toUpperCase();if(l!==last){h+='<div class="letter" dir="auto">'+esc(l)+'</div>';last=l}h+='<div class="gl"><a href="#/'+it.ch.id+'/'+it.id+'"><b>'+esc(it.title)+'</b><span>'+esc(it.def)+'</span></a></div>'});
+ function k(t){return t.replace(/^[^\p{L}\p{N}]+/u,'')}var items=all.slice().sort(function(a,b){return k(a.title).localeCompare(k(b.title),'he')}),h='<h1 class="ct">מילון מושגים</h1><p class="lead">'+total+' מושגים בסדר אלפביתי. הקשה על מושג פותחת את ההסבר המלא.</p>',last='';
+ items.forEach(function(it){var l=k(it.title).charAt(0).toUpperCase();if(l!==last){h+='<div class="letter" dir="auto">'+esc(l)+'</div>';last=l}h+='<div class="gl"><a href="#/'+it.ch.id+'/'+it.id+'"><b>'+esc(it.title)+'</b><span>'+esc(it.def)+'</span></a></div>'});
  view(h,'מילון מושגים',null);
 }
 function route(){
