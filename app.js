@@ -114,7 +114,7 @@ function route404(){view('<h1 class="ct">הדף לא נמצא</h1><p class="lead
 function qStep(){
  var n=Q.pool.length;
  if(Q.i>=n){var pct=Math.round(Q.score/n*100),msg=pct>=90?'מצוין. אתם שולטים בחומר.':pct>=70?'יפה מאוד. עוד קצת תרגול ואתם שם.':pct>=50?'התחלה טובה. כדאי לעבור שוב על הפרקים החלשים.':'זה בסדר. חוזרים לפרק, קוראים ומנסים שוב.';
-  var h='<div class="crumb"><a href="#/">בית</a></div><h1 class="ct">'+esc(Q.title)+'</h1><div class="score"><div class="big">'+Q.score+' / '+n+'</div><p>'+msg+'</p></div>';
+  var h='<div class="crumb"><a href="#/">בית</a></div><h1 class="ct">'+esc(Q.title)+'</h1><div class="score"><div class="big">'+Q.score+' מתוך '+n+'</div><p>'+msg+'</p></div>';
   if(Q.wrong.length){h+='<h2 class="sec">כדאי לחזור על</h2>';Q.wrong.forEach(function(w){h+='<a class="res" href="#/'+w.it.ch.id+'/'+w.it.id+'"><b>'+esc(w.it.title)+'</b><span>'+esc(w.q.q)+'</span></a>'})}
   h+='<div style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn" id="again">מבחן חדש</button><a class="btn alt" href="#/'+(Q.which==='all'?'':Q.which)+'">'+(Q.which==='all'?'לדף הבית':'חזרה לפרק')+'</a></div>';
   view(h,Q.title,null);document.getElementById('again').onclick=function(){quizView(Q.which)};return}
