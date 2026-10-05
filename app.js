@@ -29,7 +29,7 @@ drawer.addEventListener('click',function(e){if(e.target.closest('a'))openD(false
 document.addEventListener('keydown',function(e){if(e.key==='Escape')openD(false)});
 function setBar(){var h=document.documentElement,m=h.scrollHeight-h.clientHeight;bar.style.width=(m>0?Math.min(100,h.scrollTop/m*100):0)+'%'}
 window.addEventListener('scroll',setBar,{passive:true});
-function view(html,title,cur){app.innerHTML='<div class="fade">'+html+'</div>';document.title=(title?title+' | ':'')+'מדריך הקוד והרשת בעברית';buildDrawer(cur);window.scrollTo(0,0);setBar();app.focus({preventScroll:true})}
+function view(html,title,cur){app.innerHTML='<div class="fade">'+html+'</div>';document.title=(title?title+' | ':'')+'מדריך הקוד והרשת בעברית';buildDrawer(cur);window.scrollTo({top:0,behavior:'instant'});setBar();app.focus({preventScroll:true})}
 function home(){
  var s=sum(),h='<section class="hero"><h1>לדעת מה קורה מאחורי הקלעים</h1><p>מדריך מקיף בעברית לעולם התכנות והאינטרנט. מהשאלה "מה זה שרת" ועד אבטחה, פריסה ובינה מלאכותית. בשפה פשוטה, עם דוגמאות.</p><a class="btn" href="#/'+B[0].id+'">מתחילים מהפרק הראשון</a> <a class="btn alt" href="#/search">חיפוש</a><div class="stats"><span>'+B.length+' פרקים</span><span>'+total+' מושגים</span><span>'+(s?s+' נקראו':'בחינם ובלי הרשמה')+'</span></div></section>';
  h+='<h2 class="sec">כל הפרקים</h2><div class="grid">';
@@ -76,7 +76,7 @@ function route(){
  if(a==='search')return searchView(decodeURIComponent(p[1]||''));
  var c=byId(a);if(!c){return view('<h1 class="ct">הדף לא נמצא</h1><p class="lead">אולי הקישור ישן. <a href="#/">חזרה לדף הבית</a></p>','לא נמצא',null)}
  chapter(c);
- if(p[1]){var el=document.getElementById(p[1]);if(el)setTimeout(function(){el.scrollIntoView();window.scrollBy(0,-62)},30)}
+ if(p[1]){var el=document.getElementById(p[1]);if(el)setTimeout(function(){el.scrollIntoView({behavior:'instant',block:'start'})},60)}
 }
 window.addEventListener('hashchange',route);route();
 })();
