@@ -1,14 +1,16 @@
 (function(){
 var B=window.BOOK,app=document.getElementById('app'),drawer=document.getElementById('drawer'),scrim=document.getElementById('scrim'),bar=document.querySelector('#bar i');
-var KEY='kodrshet-done-v1',done={};
+var KEY='kodrshet-done-v2',done={};
 try{done=JSON.parse(localStorage.getItem(KEY)||'{}')}catch(e){}
-var QK='kodrshet-quiz-v1',qs={};try{qs=JSON.parse(localStorage.getItem(QK)||'{}')}catch(e){}
+var QK='kodrshet-quiz-v2',qs={};try{qs=JSON.parse(localStorage.getItem(QK)||'{}')}catch(e){}
+var PK='kodrshet-passed-v1',passed={};try{passed=JSON.parse(localStorage.getItem(PK)||'{}')}catch(e){}
 function qsave(){try{localStorage.setItem(QK,JSON.stringify(qs))}catch(e){}}
+function psave(){try{localStorage.setItem(PK,JSON.stringify(passed))}catch(e){}}
 function save(){try{localStorage.setItem(KEY,JSON.stringify(done))}catch(e){}}
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 var all=[];B.forEach(function(c,ci){c.i=ci;c.items.forEach(function(it,ii){it.ch=c;it.ii=ii;all.push(it)})});
 var total=all.length;
-function cdone(c){return c.items.filter(function(i){return done[i.id]}).length}
+function cdone(c){return passed[c.id]?c.items.length:0}
 function sum(){return Object.keys(done).filter(function(k){return done[k]}).length}
 var paths=[
  {t:'מסלול למתחילים מוחלטים',d:'מבינים מה קורה מאחורי אתר ומה הכלים הבסיסיים.',c:['internet','servers','code','frontend']},
@@ -113,7 +115,7 @@ function quizView(which){
 function route404(){view('<h1 class="ct">הדף לא נמצא</h1><p class="lead"><a href="#/">חזרה לדף הבית</a></p>','לא נמצא',null)}
 function qStep(){
  var n=Q.pool.length;
- if(Q.i>=n){var pct=Math.round(Q.score/n*100),msg=pct>=90?'מצוין. אתם שולטים בחומר.':pct>=70?'יפה מאוד. עוד קצת תרגול ואתם שם.':pct>=50?'התחלה טובה. כדאי לעבור שוב על הפרקים החלשים.':'זה בסדר. חוזרים לפרק, קוראים ומנסים שוב.';
+ if(Q.i>=n){if(Q.which!=='all'&&n>0&&Q.score===n){passed[Q.which]=true;psave()}var pct=Math.round(Q.score/n*100),msg=pct>=90?'מצוין. אתם שולטים בחומר.':pct>=70?'יפה מאוד. עוד קצת תרגול ואתם שם.':pct>=50?'התחלה טובה. כדאי לעבור שוב על הפרקים החלשים.':'זה בסדר. חוזרים לפרק, קוראים ומנסים שוב.';
   var h='<div class="crumb"><a href="#/">בית</a></div><h1 class="ct">'+esc(Q.title)+'</h1><div class="score"><div class="big">'+Q.score+' מתוך '+n+'</div><p>'+msg+'</p></div>';
   if(Q.wrong.length){h+='<h2 class="sec">כדאי לחזור על</h2>';Q.wrong.forEach(function(w){h+='<a class="res" href="#/'+w.it.ch.id+'/'+w.it.id+'"><b>'+esc(w.it.title)+'</b><span>'+esc(w.q.q)+'</span></a>'})}
   h+='<div style="margin-top:22px;display:flex;gap:10px;flex-wrap:wrap"><button class="btn" id="again">מבחן חדש</button><a class="btn alt" href="#/'+(Q.which==='all'?'':Q.which)+'">'+(Q.which==='all'?'לדף הבית':'חזרה לפרק')+'</a></div>';
