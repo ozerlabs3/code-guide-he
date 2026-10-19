@@ -1,0 +1,21 @@
+name: content checks
+on:
+  push:
+  pull_request:
+permissions:
+  contents: read
+concurrency:
+  group: content-checks-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check content.js && node --check app.js && node --check scripts/validate-content.cjs
+      - run: node scripts/validate-content.cjs
+      - run: node --test test/*.test.cjs
